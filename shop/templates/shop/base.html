@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{% block title %}Robo Depot{% endblock %}</title>
+
+  <!-- Links for BootStrap which is also supporting Validation  -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>  <!-- End Links  -->
+ 
+ <link href="{% static "css/base.css" %}" rel="stylesheet">
+</head>
+<body>
+  <div id="header">
+      <img src="\products\2022\03\03\logo.png">&emsp;<big><font color="0c158a"><b><a href="ayunir1.pythonanywhere.com/">Robo Depot</a></b></font></big>
+  </div>
+  <div id="subheader">
+    {% if request.user.is_authenticated %}
+    <div class="cart">
+      {% with total_items=cart|length %}
+          {% if cart|length > 0 %}
+            Your cart: 
+            <a href="{% url "cart:cart_detail" %}">
+              {{ total_items }} item{{ total_items|pluralize }},
+              ${{ cart.get_total_price }}
+            </a>
+          {% else %}
+            Your cart is empty.
+          {% endif %}
+        {% endwith %}
+    </div>
+    {% endif %}
+
+    <!-- For cart auth just move the cart div to user.isauthenticated -->
+    <div class="cart">
+     
+      {% if request.user.is_authenticated %}
+      <a href="{% url 'shop:logout' %}">
+       | LogOut | 
+      </a>
+
+      {% else  %}
+      <a href="{% url 'shop:login_page' %}">
+       | Login | 
+      </a>
+      <a href="{% url 'shop:register_user' %}">
+       | Register | 
+      </a>
+      {% endif %}
+    
+            
+            {% if request.user.is_authenticated %}
+         <span>| {{ request.user }} |</span>
+         {% endif %}
+        
+    </div>
+  </div>
+  <div id="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+<br>
+<footer>
+</footer>
+<br>
+  <div class="link-container">
+      <div>
+          <h2> <a href = "FAQ" class="link">FAQ</a></h2>
+      </div>
+      <div class="contact-container">
+         <h2>Contact</h2>
+         <p>Phone Number: 1-531-876-9340</p>
+         <p>Email: RoboDepot@gmail.com</p>
+      </div>
+      <div>
+         <h2><a href= "About" class="link">About</a></h2>
+      </div>
+   </div>
+<style>
+   .link {
+      color: rgb(00, 00, 00);
+      text-decoration: none;
+   }
+   .link:hover {
+      text-decoration: underline;
+   }
+   .link-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-around;
+   }
+   .contact-container {
+      text-align: center;
+   }
+   .contact-container h2 {
+      font-weight: 600;
+      margin-bottom: 0;
+   }
+   .contact-container p {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 0;
+   }
+</style>
+</html>
